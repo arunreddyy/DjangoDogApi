@@ -1,0 +1,22 @@
+services:
+  web:
+    build:
+      context: ./myproject/docker  # Path to the folder containing your Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./myproject:/app  # Maps your local project directory to the container
+    ports:
+      - "8000:8000"  # Exposes port 8000 on the host to port 8000 on the container
+    environment:
+      - DEBUG=True  # Sets the DEBUG environment variable for Django
+    depends_on:
+      - db  # Ensures the database service starts before the web service
+
+  db:
+    image: postgres:13  # Uses the official PostgreSQL image
+    environment:
+      POSTGRES_USER: aruny
+      POSTGRES_PASSWORD: aruny123
+      POSTGRES_DB: arunapi
+    ports:
+      - "5432:5432"  # Exposes port 5432 on the host to port 5432 on the container
